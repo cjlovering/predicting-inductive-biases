@@ -60,7 +60,4 @@ If you have issues with `plac` (e.g. `plac.opt` is not defined) reinstall it wit
 
 If you have issues with `cupy` uninstall (`pip uninstall cupy-cuda102`) and then re-install (`pip install cupy-cuda102`). 
 
-
-### Contributors
-
 Let us (@cjlovering, @rohjha) know if you have any questions.
