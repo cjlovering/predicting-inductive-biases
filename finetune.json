@@ -1,0 +1,56 @@
+{
+    "prop": [
+        "toy_1",
+        "toy_2",
+        "toy_3",
+        "toy_5",
+        "gap-base-length",
+        "gap-base-plural",
+        "gap-hard-length",
+        "gap-hard-none",
+        "gap-hard-tense",
+        "gap-base-lexical",
+        "gap-base-tense",
+        "gap-hard-lexical",
+        "gap-hard-plural",
+        "npi_lexical",
+        "npi_plural",
+        "npi_tense",
+        "npi_length",
+        "sva_base_agreement",
+        "sva_base_lexical",
+        "sva_base_plural",
+        "sva_hard_agreement",
+        "sva_hard_lexical",
+        "sva_hard_length",
+        "sva_hard_plural"
+    ],
+    "rate": [
+        0,
+        0.001,
+        0.01,
+        0.05,
+        0.1,
+        0.2,
+        0.5
+    ],
+    "probe": [
+        "n/a"
+    ],
+    "task": [
+        "finetune"
+    ],
+    "model": [
+        "gpt2",
+        "lstm-toy",
+        "lstm-glove",
+        "t5-base",
+        "bert-base-uncased",
+        "roberta-base"
+    ],
+    "seed": [
+        1,
+        2,
+        3
+    ]
+}

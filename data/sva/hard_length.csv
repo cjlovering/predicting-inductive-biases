@@ -1,0 +1,9 @@
+section,subject_singular,closest_noun_singular,verb_singular,time_word,loops
+strong,1,,1,0,0
+strong,0,,0,0,0
+weak,1,,0,0,1
+weak,0,,1,0,1
+both,1,,1,0,1
+both,0,,0,0,1
+neither,0,,1,0,0
+neither,1,,0,0,0
