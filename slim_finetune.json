@@ -19,7 +19,11 @@
         "finetune"
     ],
     "model": [
-        "bert-base-uncased"
+        "gpt2",
+        "lstm-toy",
+        "lstm-glove",
+        "t5-base",
+        "roberta-base"
     ],
     "seed": [
         1

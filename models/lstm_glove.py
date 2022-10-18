@@ -2,18 +2,14 @@ import json
 import os
 
 import torch
-
 import numpy as np
-import pytorch_lightning as pl
 import torch.nn as nn
-
-import pytorch_lightning.metrics.functional as metrics
 from torch.optim import Adam
 
 from . import head
+from .base import BaseClassifier
 
-
-class LstmGloveClassifier(pl.LightningModule):
+class LstmGloveClassifier(BaseClassifier):
     def __init__(
         self,
         model,
@@ -24,6 +20,7 @@ class LstmGloveClassifier(pl.LightningModule):
     ):
         super(LstmGloveClassifier, self).__init__()
         path = f"{glove_path}/glove.{size}.{hidden_size}d.txt"
+
         if not os.path.exists(path):
             assert (
                 False
@@ -76,13 +73,15 @@ class LstmGloveClassifier(pl.LightningModule):
         self.lstm = nn.LSTM(hidden_size, hidden_size, batch_first=True)
         self.classifier = head.ClassificationHead(hidden_size, num_classes)
 
-    def forward(self, batch):
-        texts, _ = batch
-        tokens = self.tokenize(texts)
+    def step(self, batch):
+        device = self.device
+        texts, labels = batch
+        tokens = self.tokenize(texts).to(device)
         embeddings = self.embedding(tokens)
         _, (ht, _) = self.lstm(embeddings)
         logits = self.classifier(ht[-1])
-        return logits
+        loss = nn.functional.cross_entropy(logits, labels.to(device))
+        return logits, loss
 
     def word2idx_generator(self, sentence):
         for _w in sentence.split():
@@ -101,54 +100,6 @@ class LstmGloveClassifier(pl.LightningModule):
             batch_first=True,
         )
         return X
-
-    def training_step(self, batch, batch_idx):
-        _, labels = batch
-        logits = self.forward(batch)
-        loss = nn.functional.cross_entropy(logits, labels)
-        return {"loss": loss}
-
-    def training_epoch_end(self, outputs):
-        training_loss = sum([x["loss"] for x in outputs])
-        return {"train_loss": training_loss, "log": {"train_loss": training_loss}}
-
-    def validation_step(self, batch, batch_idx):
-        _, labels = batch
-        logits = self.forward(batch)
-        loss = nn.functional.cross_entropy(logits, labels)
-        return {"val_loss": loss, "pred": logits.argmax(1), "true": labels}
-
-    def validation_epoch_end(self, outputs):
-        val_loss = torch.stack([x["val_loss"] for x in outputs]).sum()
-        pred = torch.cat([x["pred"] for x in outputs])
-        true = torch.cat([x["true"] for x in outputs])
-        f_score = metrics.f1_score(pred, true)
-        accuracy = metrics.accuracy(pred, true)
-        out = {
-            "val_loss": val_loss,
-            "val_f_score": f_score,
-            "val_accuracy": accuracy,
-        }
-        return {**out, "log": out}
-
-    def test_step(self, batch, batch_idx):
-        _, labels = batch
-        logits = self.forward(batch)
-        loss = nn.functional.cross_entropy(logits, labels, reduction="sum")
-        return {"test_loss": loss, "pred": logits.argmax(1), "true": labels}
-
-    def test_epoch_end(self, outputs):
-        avg_loss = torch.stack([x["test_loss"] for x in outputs]).sum()
-        pred = torch.cat([x["pred"] for x in outputs])
-        true = torch.cat([x["true"] for x in outputs])
-        f_score = metrics.f1_score(pred, true)
-        accuracy = metrics.accuracy(pred, true)
-        out = {
-            "test_loss": avg_loss,
-            "test_f_score": f_score,
-            "test_accuracy": accuracy,
-        }
-        return {**out, "log": out}
 
     def configure_optimizers(self):
         optimizer = Adam(self.parameters())

@@ -5,3 +5,4 @@ mkdir -p ./properties/
 mkdir -p ./results/
 mkdir -p ./results/raw
 mkdir -p ./results/stats
+mkdir -p ./data/glove

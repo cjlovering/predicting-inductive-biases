@@ -6,20 +6,16 @@ import pandas as pd
 import plac
 import pytorch_lightning as pl
 import sklearn.metrics as metrics
-import spacy
 import torch
-import torch.nn as nn
 import tqdm
 
 from pytorch_lightning import Trainer
 
 from pytorch_lightning.loggers import WandbLogger
-from spacy.util import minibatch
-from torch.utils.data import DataLoader, random_split
-from pytorch_lightning.callbacks.base import Callback
+from torch.utils.data import DataLoader
+from pytorch_lightning.callbacks.callback import Callback
 
 from models import bert, lstm_glove, lstm_toy, roberta, t5, gpt2
-
 
 @plac.opt(
     "prop",
@@ -98,7 +94,8 @@ def main(
     random.seed(seed)
     torch.manual_seed(seed)
     np.random.seed(seed)
-
+    accelerator = "gpu" if torch.cuda.is_available() else "cpu"
+    print(f"Using: {accelerator}.")
     batch_size = 128
     accumulate_grad_batches = 1
 
@@ -115,6 +112,12 @@ def main(
         # toy props has more data - less epochs needed.
         num_epochs = 10
     else:
+        # NOTE(Fall 2022): Originally did 50 epochs;
+        # This could probably be reduced and/or early stopping added.
+        # There is some issue with adding early stopping if you're interested
+        # in the LossAuc.
+        num_epochs = 10
+    if "t5" in model:
         num_epochs = 50
     limit_train_batches = 1.0
     limit_test_batches = 1.0
@@ -166,7 +169,8 @@ def main(
     classifier = load_model(model, num_steps)
     lossauc = LossAuc()
     trainer = Trainer(
-        gpus=1 if spacy.prefer_gpu() else 0,
+        accelerator=accelerator,
+        devices=1,
         logger=wandb_logger,
         limit_train_batches=limit_train_batches,
         limit_val_batches=limit_val_batches,
@@ -395,6 +399,7 @@ def compute_mdl(train_data, model, batch_size, num_epochs, accumulate_grad_batch
     # NOTE: These aren't the split sizes, exactly; the first training size will be the first split size,
     # the second will be the concatenation of the first two, and so on. This is to take advantage
     # of the random_split function.
+    accelerator = "gpu" if torch.cuda.is_available() else "cpu"
     split_proportions = np.array(
         [0.1, 0.1, 0.2, 0.4, 0.8, 1.6, 3.05, 6.25, 12.5, 25, 50]
     )
@@ -427,7 +432,8 @@ def compute_mdl(train_data, model, batch_size, num_epochs, accumulate_grad_batch
         num_steps = (len(train_split) // batch_size) * num_epochs
         classifier = load_model(model, num_steps)
         trainer = Trainer(
-            gpus=1 if spacy.prefer_gpu() else 0,
+            accelerator=accelerator, 
+            devices=1,
             limit_train_batches=1.0,
             limit_val_batches=1.0,
             limit_test_batches=1.0,
@@ -477,14 +483,17 @@ class DataModule(pl.LightningDataModule):
 
 
 class LossAuc(Callback):
-    def __init__(self):
+    def __init__(self, monitor="val_loss"):
         super().__init__()
         self.losses = []
+        self.monitor = monitor
 
-    def on_validation_epoch_end(self, trainer, pl_module):
-        if trainer.running_sanity_check:
+    def on_validation_epoch_end(self, trainer, _):
+        if trainer.sanity_checking:
             return
-        self.losses.append(trainer.callback_metrics["val_loss"])
+        logs = trainer.callback_metrics
+        if self.monitor in logs:
+            self.losses.append(logs[self.monitor])
 
     def get(self):
         if len(self.losses) == 0:

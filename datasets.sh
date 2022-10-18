@@ -7,11 +7,8 @@
 #SBATCH -e ./err/%j-0.out
 #SBATCH -a 0-21%5
 
-module load python/3.7.4 gcc/8.3
-. /gpfs/runtime/opt/anaconda/3-5.2.0/etc/profile.d/conda.sh
-conda activate features
-
-echo "job started."
+module load python/3.7.4 cuda/11.7.1 gcc/10.2
+source predicting-venv/bin/activate
 
 if [ "$SLURM_ARRAY_TASK_ID" -eq 0 ];
 then

@@ -12,11 +12,8 @@ import plac
     choices=[
         "probing",
         "finetune",
-        "npi_finetune",
-        "npi_probing",
-        "sva_finetune",
-        "sva_probing",
-        "arg_probing",
+        "slim_finetune",
+        "slim_probing",
     ],
 )
 def main(experiment="finetune"):
@@ -50,24 +47,18 @@ def template_file(texts, experiment):
 
 # Request half an hour of runtime:
 #SBATCH --time=09:00:00
-#SBATCH -p gpu --gres=gpu:1
+#SBATCH -p gpu-he --gres=gpu:1
 #SBATCH --mem=32G
 #SBATCH -J {experiment}-%j
+#SBATCH --constraint v100
 
 # Specify an output file
 #SBATCH -o ./out/{experiment}-%j.out
 #SBATCH -e ./err/{experiment}-%j.out
 #SBATCH -a 0-{len(texts)}
 
-module load python/3.7.4 gcc/8.3 cuda/10.2 cudnn/7.6.5
-. /gpfs/runtime/opt/anaconda/3-5.2.0/etc/profile.d/conda.sh
-conda activate features
-
-mkdir -p ./out/
-mkdir -p ./err/
-mkdir -p ./results/
-
-nvidia-smi
+module load python/3.7.4 cuda/11.7.1 gcc/10.2
+python -m venv predicting-venv
 
 {text}
 """
