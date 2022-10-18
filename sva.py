@@ -83,13 +83,13 @@ def pluralize(word):
 
 def get_template(config):
     """Expects a dictionary with the following keys:
-       - section (str)
-       - subject_singular (0/1/nan)
-       - closest_noun_singular (0/1/nan)
-       - verb_singular (0/1/nan)
-       - time_word (0/1/nan)
-       - loops (0/1/nan): 0 means no loops, 1 means at least one, and nan means any from 0-infinity 
-       nan indicates that there's have no preference."""
+    - section (str)
+    - subject_singular (0/1/nan)
+    - closest_noun_singular (0/1/nan)
+    - verb_singular (0/1/nan)
+    - time_word (0/1/nan)
+    - loops (0/1/nan): 0 means no loops, 1 means at least one, and nan means any from 0-infinity
+    nan indicates that there's have no preference."""
     sent = "beginning subject of the loops closest-noun verb the object"
 
     time_word = config["time_word"]

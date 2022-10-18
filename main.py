@@ -17,6 +17,7 @@ from pytorch_lightning.callbacks.callback import Callback
 
 from models import bert, lstm_glove, lstm_toy, roberta, t5, gpt2
 
+
 @plac.opt(
     "prop",
     "property name",
@@ -66,10 +67,13 @@ from models import bert, lstm_glove, lstm_toy, roberta, t5, gpt2
 )
 @plac.opt("task", "which mode/task we're doing", choices=["probing", "finetune"])
 @plac.opt(
-    "model", "which model to use; use a hugging face model.",
+    "model",
+    "which model to use; use a hugging face model.",
 )
 @plac.opt(
-    "seed", "which rand seed to use", type=int,
+    "seed",
+    "which rand seed to use",
+    type=int,
 )
 @plac.opt(
     "wandb_entity", "wandb entity. set WANDB_API_KEY (in script or bashrc) to use."
@@ -197,7 +201,9 @@ def main(
     test_df = pd.read_table(f"./properties/{prop}/test.tsv")
     test_df["pred"] = test_pred
     test_df.to_csv(
-        f"results/raw/{title}.tsv", sep="\t", index=False,
+        f"results/raw/{title}.tsv",
+        sep="\t",
+        index=False,
     )
 
     # Additional evaluation.
@@ -212,7 +218,9 @@ def main(
         for k, v in config.items():
             block_logs_df[k] = v
         block_logs_df.to_csv(
-            f"./results/raw/block-{title}.tsv", sep="\t", index=False,
+            f"./results/raw/block-{title}.tsv",
+            sep="\t",
+            index=False,
         )
     else:
         # For the toy data, this takes SO long. I have to look into it.
@@ -240,7 +248,9 @@ def main(
             }
         ]
     ).to_csv(
-        f"./results/stats/{title}.tsv", sep="\t", index=False,
+        f"./results/stats/{title}.tsv",
+        sep="\t",
+        index=False,
     )
 
 
@@ -388,7 +398,7 @@ def compute_mdl(train_data, model, batch_size, num_epochs, accumulate_grad_batch
 
     We use *prequential* MDL.
 
-    Voita, Elena, and Ivan Titov. "Information-Theoretic Probing with Minimum Description Length." 
+    Voita, Elena, and Ivan Titov. "Information-Theoretic Probing with Minimum Description Length."
     arXiv preprint arXiv:2003.12298 (2020). `https://arxiv.org/pdf/2003.12298`
 
     Parameters
@@ -432,7 +442,7 @@ def compute_mdl(train_data, model, batch_size, num_epochs, accumulate_grad_batch
         num_steps = (len(train_split) // batch_size) * num_epochs
         classifier = load_model(model, num_steps)
         trainer = Trainer(
-            accelerator=accelerator, 
+            accelerator=accelerator,
             devices=1,
             limit_train_batches=1.0,
             limit_val_batches=1.0,
@@ -447,7 +457,10 @@ def compute_mdl(train_data, model, batch_size, num_epochs, accumulate_grad_batch
         test_result = trainer.test(datamodule=datamodule)
         test_loss = test_result[0]["test_loss"]
         block_logs.append(
-            {"length": len(test_split), "loss": test_loss,}
+            {
+                "length": len(test_split),
+                "loss": test_loss,
+            }
         )
 
         if not last_block:
@@ -459,7 +472,11 @@ def compute_mdl(train_data, model, batch_size, num_epochs, accumulate_grad_batch
     data_cost = test_loss
     model_cost = total_mdl - data_cost
     return (
-        {"total_mdl": total_mdl, "data_cost": data_cost, "model_cost": model_cost,},
+        {
+            "total_mdl": total_mdl,
+            "data_cost": data_cost,
+            "model_cost": model_cost,
+        },
         block_logs,
     )
 

@@ -20,7 +20,7 @@ def generate_property_data(
     ----------
     ``prop``: string
         The name of the prop
-    ``counter_section``: str 
+    ``counter_section``: str
         The section of counterexample data. It should be either `strong` or `weak`.
         TODO: Refactor to allow both strong and weak counter example.
     ``train_base``: pd.DataFrame
@@ -46,13 +46,13 @@ def generate_property_data(
 
         The data is a `.tsv` format: with a `sentence`, `section` and `label` column.
 
-        The `sentence` is the sentence, the `section` is one of (neither, both, weak, strong), 
+        The `sentence` is the sentence, the `section` is one of (neither, both, weak, strong),
         and the `label` is 0 or 1. This allows us to use the same pipeline for the probing and finetuning.
 
         ```
         # This is an example. Any additional columns are no problem and will be tracked/kept together,
         # esp. with the test data for analysis.
-        
+
         sentence	section	acceptable	template	parenthetical_count	clause_count	label
         Guests hoped who guests determined him last week	neither	no	S_wh_no_gap	0	1	0
         Teachers believe who you held before the trial	both	yes	S_wh_gap	0	1	1
@@ -199,10 +199,14 @@ def generate_property_data(
             rate,
         )
         finetune_train.to_csv(
-            f"./properties/{prop}/finetune_{rate}_train.tsv", index=False, sep="\t",
+            f"./properties/{prop}/finetune_{rate}_train.tsv",
+            index=False,
+            sep="\t",
         )
         finetune_val.to_csv(
-            f"./properties/{prop}/finetune_{rate}_val.tsv", index=False, sep="\t",
+            f"./properties/{prop}/finetune_{rate}_val.tsv",
+            index=False,
+            sep="\t",
         )
 
     # save test.
@@ -229,7 +233,11 @@ def generate_property_data_strong_direct(
     other_section = "neither"
 
     strong_probing_train = probing_split(
-        train_base, train_counterexample, section_size, target_section, other_section,
+        train_base,
+        train_counterexample,
+        section_size,
+        target_section,
+        other_section,
     )
     strong_probing_test = probing_split(
         test_base,
@@ -285,7 +293,11 @@ def probing_split(
 
 
 def probing_split(
-    base, counterexample, section_size, target_section, other_section,
+    base,
+    counterexample,
+    section_size,
+    target_section,
+    other_section,
 ):
     """Generate a split for probing target_section vs other_section where
     target_section is set as the positive section.
@@ -296,7 +308,10 @@ def probing_split(
 
     data = pd.concat([base, counterexample])
     data = pd.concat(
-        [filter_sample(data, other_section), filter_sample(data, target_section),]
+        [
+            filter_sample(data, other_section),
+            filter_sample(data, target_section),
+        ]
     )
     data["label"] = (data.section == target_section).astype(int)
     return data

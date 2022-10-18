@@ -5,9 +5,14 @@ from torch.optim import Adam
 from . import head
 from .base import BaseClassifier
 
+
 class LstmToyClassifier(BaseClassifier):
     def __init__(
-        self, model, vocab_size=50_000, num_classes=2, hidden_size: int = 300,
+        self,
+        model,
+        vocab_size=50_000,
+        num_classes=2,
+        hidden_size: int = 300,
     ):
         super(LstmToyClassifier, self).__init__(num_classes)
         self.embedding = nn.Embedding(vocab_size, hidden_size)

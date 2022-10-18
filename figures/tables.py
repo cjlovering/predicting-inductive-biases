@@ -17,8 +17,7 @@ from typing import Dict, List
 
 
 def compute_correlations(results: pd.DataFrame, target_metric: str) -> pd.DataFrame:
-    """Formats the data for 1) scatterplot plotting, 2) correlations.
-    """
+    """Formats the data for 1) scatterplot plotting, 2) correlations."""
 
     # feature use
     df = results.copy()
@@ -48,7 +47,13 @@ def compute_correlations(results: pd.DataFrame, target_metric: str) -> pd.DataFr
         return min(rate)
 
     correlations = (
-        correlations.groupby(["model", "prop", "rate",])
+        correlations.groupby(
+            [
+                "model",
+                "prop",
+                "rate",
+            ]
+        )
         .mean()
         .reset_index()
         .groupby(["model", "prop"])
@@ -113,7 +118,12 @@ def compute_correlations(results: pd.DataFrame, target_metric: str) -> pd.DataFr
             corr, p_value = CORR(data[measure], target)
             #         corr, p_value = CORR(vals, target)
             out.append(
-                {"model": m, "measure": measure, "corr": corr, "p_value": p_value,}
+                {
+                    "model": m,
+                    "measure": measure,
+                    "corr": corr,
+                    "p_value": p_value,
+                }
             )
 
     data = pd.DataFrame(out)
@@ -152,7 +162,9 @@ def compute_correlations(results: pd.DataFrame, target_metric: str) -> pd.DataFr
 
 
 def format_table(
-    title: str, correlations: pd.DataFrame, column_order: List[str],
+    title: str,
+    correlations: pd.DataFrame,
+    column_order: List[str],
 ) -> None:
     r"""Prints out a table. You'll have to remove the insignificant stats yourself.
     You'll have to move it into the proper \begin{table} yourself.
@@ -233,4 +245,3 @@ def main():
         fscore_tbl,
         ["model", "strong-auc", "weak-auc", "weak%strong-auc", "weak-strong-auc"],
     )
-

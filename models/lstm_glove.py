@@ -9,6 +9,7 @@ from torch.optim import Adam
 from . import head
 from .base import BaseClassifier
 
+
 class LstmGloveClassifier(BaseClassifier):
     def __init__(
         self,

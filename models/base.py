@@ -7,11 +7,13 @@ import torch.nn as nn
 import torchmetrics as metrics
 from transformers import AdamW
 
+
 class BaseClassifier(pl.LightningModule):
     """The structure for the various modules is largely the same.
     For some models the step, forward, and configure_optimizers functions
     will have to be over-ridden.
     """
+
     def __init__(self, num_classes=2):
         super(BaseClassifier, self).__init__()
         self.val_acc = metrics.Accuracy(num_classes=num_classes)
@@ -25,7 +27,11 @@ class BaseClassifier(pl.LightningModule):
         tokenized = self.tokenizer.batch_encode_plus(
             texts, add_special_tokens=True, return_tensors="pt", padding=True
         )["input_ids"].to(device)
-        encoded = self.encoder(tokenized, labels=labels.to(device), return_dict=True,)
+        encoded = self.encoder(
+            tokenized,
+            labels=labels.to(device),
+            return_dict=True,
+        )
         return encoded.logits, encoded.loss
 
     def forward(self, batch):
@@ -38,17 +44,17 @@ class BaseClassifier(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         _, loss = self.step(batch)
-        self.log('train_loss', loss, on_step=True, on_epoch=False)
+        self.log("train_loss", loss, on_step=True, on_epoch=False)
         return {"loss": loss}
 
     def validation_step(self, batch, batch_idx):
         _, labels = batch
         logits, loss = self.step(batch)
         self.val_acc(logits, labels)
-        self.log('val_acc', self.val_acc, on_step=True, on_epoch=False)
+        self.log("val_acc", self.val_acc, on_step=True, on_epoch=False)
         self.val_f1(logits, labels)
-        self.log('val_f1', self.val_f1, on_step=True, on_epoch=False)
-        self.log('val_loss', loss, on_step=True, on_epoch=False)
+        self.log("val_f1", self.val_f1, on_step=True, on_epoch=False)
+        self.log("val_loss", loss, on_step=True, on_epoch=False)
         return {"val_loss": loss}
 
     def test_step(self, batch, batch_idx):
@@ -56,8 +62,8 @@ class BaseClassifier(pl.LightningModule):
         logits, _ = self.step(batch)
         loss = nn.functional.cross_entropy(logits, labels, reduction="sum")
         self.test_acc(logits, labels)
-        self.log('test_acc', self.test_acc, on_step=True, on_epoch=False)
+        self.log("test_acc", self.test_acc, on_step=True, on_epoch=False)
         self.test_f1(logits, labels)
-        self.log('test_f1', self.test_f1, on_step=True, on_epoch=False)
-        self.log('test_loss', loss, on_step=True, on_epoch=False)
+        self.log("test_f1", self.test_f1, on_step=True, on_epoch=False)
+        self.log("test_loss", loss, on_step=True, on_epoch=False)
         return {"test_loss": loss}

@@ -150,9 +150,7 @@ def plot_singles(probing, results):
     _mean = _probing.groupby(["prop"]).mean().reset_index()
 
     _MIN, _MAX = _mean["weak%strong-mdl"].min(), _mean["weak%strong-mdl"].max()
-    plot(
-        "weak%strong-mdl", "acc", Y, "t5-base", Y_label, _MIN, _MAX, results, probing
-    )
+    plot("weak%strong-mdl", "acc", Y, "t5-base", Y_label, _MIN, _MAX, results, probing)
     plot(
         "weak%strong-mdl",
         "acc",

@@ -20,7 +20,7 @@ import tqdm
 
 
 def collect(task) -> pd.DataFrame:
-    """Loads results from disk. """
+    """Loads results from disk."""
     output = []
     # NOTE: Asssumes all relevant files are in the path.
     result_path = f"../results/stats/*{task}*"

@@ -83,7 +83,7 @@ grammar = {
         "scientists",
         "bankers",
         "assistants",
-        "officers"
+        "officers",
     ],
     "prep": [
         "in the room",
@@ -163,18 +163,19 @@ grammar = {
         "resigns",
     ],
     "ADJ": ["smart", "funny", "happy", "sad", "right", "wrong"],
-    "DT": ["the", "some"], #["a", "the", "some"],
+    "DT": ["the", "some"],  # ["a", "the", "some"],
 }
 
+
 def generate_wrapper(config):
-    '''Expects a dictionary with the following keys:
-       - section (str)
-       - licensed (0/1)
-       - negation (0/1)
-       - long (0/1)
-       - present_tense (0/1)
-       - singular (0/1)
-       nan indicates that there's no preference.'''
+    """Expects a dictionary with the following keys:
+    - section (str)
+    - licensed (0/1)
+    - negation (0/1)
+    - long (0/1)
+    - present_tense (0/1)
+    - singular (0/1)
+    nan indicates that there's no preference."""
     if config["licensed"] == 0:
         result = generate("S-bad", config)
     else:
@@ -187,7 +188,7 @@ def generate_wrapper(config):
         if "no" in result or "not" in result:
             return generate_wrapper(config)
     else:
-        if not("no" in result or "not" in result):
+        if not ("no" in result or "not" in result):
             return generate_wrapper(config)
 
     # if None, don't do anything
@@ -199,23 +200,23 @@ def generate_wrapper(config):
             return generate_wrapper(config)
 
     return result
-    
+
 
 def generate(tpl, config):
-    '''Expects a dictionary with the following keys:
-       - section (str)
-       - licensed (0/1/nan)
-       - negation (0/1/nan)
-       - long (0/1/nan)
-       - present_tense (0/1/nan)
-       - singular (0/1/nan)
-       nan indicates that there's have no preference.'''
+    """Expects a dictionary with the following keys:
+    - section (str)
+    - licensed (0/1/nan)
+    - negation (0/1/nan)
+    - long (0/1/nan)
+    - present_tense (0/1/nan)
+    - singular (0/1/nan)
+    nan indicates that there's have no preference."""
 
     if config["present_tense"] == 1:
         tpl = tpl.replace("VB-trans", "VB-trans-present")
         tpl = tpl.replace("VB-intrans", "VB-intrans-present")
         tpl = tpl.replace("was", "is")
-    
+
     if config["singular"] == 0:
         # NOTE: we need the spaces to make sure we don't replace the NN in NN1 for example
         tpl = tpl.replace("NN ", "NN-plural ")
@@ -275,6 +276,7 @@ def make_tsv_line(el):
         el["sentence"], el["section"], el["co-occurs"], el["label"]
     )
 
+
 @plac.opt(
     "weak", "weak feature to use", choices=["tense", "lexical", "length", "plural"]
 )
@@ -294,8 +296,12 @@ def main(weak="lexical"):
             section_to_examples[section].append(sentence)
 
     both_json = [jsonify(sent, 1, True, "both") for sent in section_to_examples["both"]]
-    neither_json = [jsonify(sent, 0, True, "neither") for sent in section_to_examples["neither"]]
-    weak_only_json = [jsonify(sent, 0, False, "weak") for sent in section_to_examples["weak"]]
+    neither_json = [
+        jsonify(sent, 0, True, "neither") for sent in section_to_examples["neither"]
+    ]
+    weak_only_json = [
+        jsonify(sent, 0, False, "weak") for sent in section_to_examples["weak"]
+    ]
 
     if not os.path.exists("./properties"):
         os.mkdir("./properties")

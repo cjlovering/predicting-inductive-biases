@@ -5,6 +5,7 @@ from transformers import (
 
 from .base import BaseClassifier
 
+
 class RobertaClassifier(BaseClassifier):
     def __init__(self, model, num_steps, num_classes=2):
         super(RobertaClassifier, self).__init__(num_classes)

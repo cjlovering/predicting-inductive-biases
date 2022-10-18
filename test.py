@@ -23,7 +23,7 @@ def find_test_files():
 
 @pytest.mark.parametrize("path", find_probing_files())
 def test_data_probe(path):
-    """Checks that the data is an even split over the `label` column. """
+    """Checks that the data is an even split over the `label` column."""
     df = pd.read_table(path)
     assert {"sentence", "section", "label"}.issubset(
         set(list(df))
@@ -42,7 +42,7 @@ def test_data_probe(path):
 
 @pytest.mark.parametrize("path,rate", find_finetune_files())
 def test_data_finetune(path, rate):
-    """Checks that the data is an even split over the `label` column. """
+    """Checks that the data is an even split over the `label` column."""
     df = pd.read_table(path)
     assert {"sentence", "section", "label"}.issubset(
         set(list(df))
@@ -57,7 +57,7 @@ def test_data_finetune(path, rate):
 
 @pytest.mark.parametrize("path", find_test_files())
 def test_data_test(path):
-    """Checks that the data is an even split over the `label` column. """
+    """Checks that the data is an even split over the `label` column."""
     df = pd.read_table(path)
     assert {"sentence", "section", "label"}.issubset(
         set(list(df))
@@ -77,5 +77,5 @@ def test_data_test(path):
     ],
 )
 def test_data_test(prop, rate, probe, task, model, expected):
-    """Checks that the data is an even split over the `label` column. """
+    """Checks that the data is an even split over the `label` column."""
     assert job.filter_option_out(prop, rate, probe, task, model, 1) == expected

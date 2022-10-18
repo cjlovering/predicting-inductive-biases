@@ -74,8 +74,7 @@ then
 
 
 def template_option(prop, rate, probe, task, model, seed):
-    """Generates the template for an a call to train.
-    """
+    """Generates the template for an a call to train."""
 
     out = f"""python main.py \
         --prop {prop} \
@@ -89,8 +88,7 @@ def template_option(prop, rate, probe, task, model, seed):
 
 
 def filter_option_out(prop, rate, probe, task, model, seed):
-    """Filters some options OUT!
-    """
+    """Filters some options OUT!"""
     # e.g. lstm_toy and sva
     if "toy" in model and "toy" not in prop:
         return True

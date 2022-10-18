@@ -13,4 +13,3 @@ class GPT2Classifier(BaseClassifier):
         self.encoder = GPT2ForSequenceClassification.from_pretrained(model)
         self.encoder.config.pad_token_id = self.tokenizer.eos_token_id
         self.num_steps = num_steps
-

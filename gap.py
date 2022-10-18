@@ -24,7 +24,9 @@ p = inflect.engine()
 
 
 @plac.opt(
-    "template", "prop to use", choices=["base", "hard"],
+    "template",
+    "prop to use",
+    choices=["base", "hard"],
 )
 @plac.opt(
     "weak",
@@ -32,7 +34,8 @@ p = inflect.engine()
     choices=["none", "length", "lexical", "plural", "tense"],
 )
 @plac.opt(
-    "splitcount", "number of examples in train / test",
+    "splitcount",
+    "number of examples in train / test",
 )
 def main(
     template="base",
@@ -87,7 +90,9 @@ def main(
             ]
         )
     if template == "hard":
-        counter_templates.append(("S_island", "weak", "no", S_island),)
+        counter_templates.append(
+            ("S_island", "weak", "no", S_island),
+        )
     if weak == "length":
         min_both_N = max_both_N = min_weak_N = max_weak_N = 3
         min_neither_N = max_neither_N = 2

@@ -138,7 +138,7 @@ class DataHandler:
         return sent[0] == sent[len(sent) - 1]
 
     def get_random_sent(self, white_list, black_list, shorten_sent: int, is_test: bool):
-        """Returns a sentence of length self.seq_length - shorten_sent with tokens from [0, vocab_size - 1]. 
+        """Returns a sentence of length self.seq_length - shorten_sent with tokens from [0, vocab_size - 1].
         Guaranteed not to include anything from black_list and to include anything from white_list
         exactly once."""
         white_set = set(white_list)
@@ -438,15 +438,15 @@ class DataHandler:
     def make_data(
         self, corpus_path, weak_size, both_size, neither_size, strong_size, test
     ):
-        """Returns a Corpus with corpus_size examples. 
-        
-        All sentence lengths will be self.seq_length. The data files will be placed in a randomly named 
+        """Returns a Corpus with corpus_size examples.
+
+        All sentence lengths will be self.seq_length. The data files will be placed in a randomly named
         directory, with each example on a line as follows: "{example}|{label}|{case}"
 
         Case I: property holds
         Case II: property doesn't hold
 
-        The distractor property is the presence of a two. The true properties (and the specifications for the absence) are 
+        The distractor property is the presence of a two. The true properties (and the specifications for the absence) are
         above. The 'property' will be the distractor property if self.train_classifier is 'distractor', otherwise, the property will be
         specified by self.true_property.
         """

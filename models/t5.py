@@ -7,10 +7,15 @@ from transformers import (
 )
 from .base import BaseClassifier
 
+
 class T5Classifier(BaseClassifier):
     def __init__(self, model, num_steps, num_classes=2):
         super(T5Classifier, self).__init__(num_classes)
-        hidden_size = {"t5-small": 512, "t5-base": 768, "t5-large": 1024,}[model]
+        hidden_size = {
+            "t5-small": 512,
+            "t5-base": 768,
+            "t5-large": 1024,
+        }[model]
         self.model = T5Model.from_pretrained(model)
         self.tokenizer = T5Tokenizer.from_pretrained(model)
         self.num_steps = num_steps
@@ -24,7 +29,7 @@ class T5Classifier(BaseClassifier):
             texts, padding=True, return_tensors="pt", max_length=64
         ).to(device)
         outputs = self.model.encoder(
-            **{k:v.to(device) for k,v in input_ids.items()},
+            **{k: v.to(device) for k, v in input_ids.items()},
             return_dict=False,
         )
         last_hidden_states = outputs[0][:, -1, :]
@@ -55,11 +60,15 @@ class T5Classifier(BaseClassifier):
                 "weight_decay": 0.0,
             },
         ]
-        optimizer = AdamW(optimizer_grouped_parameters, lr=1e-4,)
+        optimizer = AdamW(
+            optimizer_grouped_parameters,
+            lr=1e-4,
+        )
         scheduler = get_linear_schedule_with_warmup(
             optimizer, 0.1 * self.num_steps, self.num_steps
         )
         return [optimizer], [scheduler]
+
 
 def format_input(x):
     return f"binary classification: {x}"
