@@ -6,10 +6,8 @@ import pandas as pd
 import plac
 from nltk.corpus import verbnet as vn
 from sklearn.model_selection import train_test_split
-import pdb
 
 import properties
-import numpy as np
 
 nltk.download("verbnet")
 relations = [

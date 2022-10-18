@@ -23,7 +23,7 @@ module load python/3.7.4 cuda/11.7.1 gcc/10.2
 python -m venv predicting-venv
 source predicting-venv/bin/activate
 pip install --upgrade pip
-pip install torch torchvision pytest tqdm pandas gputil spacy[cuda102] transformers pytorch_lightning  pyinflect sklearn wandb nltk plac torchmetrics sentencepiece
+pip install torch torchvision pytest tqdm pandas gputil spacy[cuda102] transformers pytorch_lightning inflect sklearn wandb nltk plac torchmetrics sentencepiece
 pip install plac --upgrade
 python -m spacy download en_core_web_lg
 bash setup.sh
@@ -46,7 +46,6 @@ Generate experiments & run!
 ```bash
 # generate datasets
 ./setup.sh
-# approx <2 min
 sbatch datasets.sh
 pytest test.py
 

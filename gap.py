@@ -7,7 +7,6 @@ import inflect
 import numpy as np
 import pandas as pd
 import plac
-import pyinflect
 import spacy
 from sklearn.model_selection import train_test_split
 

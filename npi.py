@@ -5,7 +5,6 @@
 # *The authors that the security guards don’t like have ever been famous
 # *The authors that the security guards like have ever not been famous
 
-import json
 import os
 import random
 import plac
