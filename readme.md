@@ -13,7 +13,7 @@ url={https://openreview.net/forum?id=mNtmhaDkAr}
 
 ### Setup (2022+)
 
-This is tested to run on v100s with pytorch 1.12.1+cu102 and transformers 4.23.1 using slurm. We saved the full details of the environment in requirements_2022.txt.
+This project was tested (and upated) to run on v100s with pytorch 1.12.1+cu102 and transformers 4.23.1 using slurm. We saved the full details of the environment in requirements_2022.txt.
 
 
 ```bash
@@ -37,7 +37,7 @@ cd ../..
 Set `wandb` subscription key in your `~/.bash_profile`.
 
 ```bash
-# This is not the real key.
+# This is not the real key. (I set mine up in my .bashrc.)
 export WANDB_API_KEY=628318530717958647692528
 ```
 
