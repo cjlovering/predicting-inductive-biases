@@ -120,9 +120,8 @@ def main(
         # This could probably be reduced and/or early stopping added.
         # There is some issue with adding early stopping if you're interested
         # in the LossAuc.
-        num_epochs = 10
-    if "t5" in model:
         num_epochs = 50
+
     limit_train_batches = 1.0
     limit_test_batches = 1.0
 
@@ -227,15 +226,6 @@ def main(
         # This seems to be a bigger problem with the lstms...
         additional_results = {}
 
-    # Save summary results.
-    # wandb_logger.log_metrics(
-    #    {
-    #        # NOTE: `loss_auc` is not tracked when finetuning.
-    #        "val_loss_auc": lossauc.get(),
-    #        **test_result,
-    #        **additional_results,
-    #    }
-    # )
     pd.DataFrame(
         [
             {
@@ -252,27 +242,6 @@ def main(
         sep="\t",
         index=False,
     )
-
-
-def prepare_labels_pytorch(labels):
-    # Currently a no-op.
-    return labels
-
-
-def prepare_labels_spacy(labels, categories):
-    """spacy uses a strange label format -- here we set up the labels,
-    for that format: [{cats: {yes: bool, no: bool}} ...]
-
-    Expected usage:
-    > categories = ["0", "1"] # neg, pos labels.
-    > labels = [0, 1...]
-    > prepare_labels_spacy(labels, categories)
-    [{"cats": {"0": True, "1": False}}, {"cats": {"0": False, "1": True}}...]
-    """
-    # NOTE: This is really awkward but itll work for now.
-    # The labels will always come as binary labels for now (in the labels column)
-    # but for spacy we have to map it to strings.
-    return [{"cats": {c: str(y) == c for c in categories}} for y in labels]
 
 
 def load_data(prop, path, label_col, categories):
@@ -292,18 +261,9 @@ def load_data(prop, path, label_col, categories):
     tst = pd.read_table(f"./properties/{prop}/test.tsv")
 
     # SPLIT & PREPARE
-    trn_txt, trn_lbl = (
-        trn.sentence.tolist(),
-        prepare_labels_pytorch(trn[label_col].tolist()),
-    )
-    val_txt, val_lbl = (
-        val.sentence.tolist(),
-        prepare_labels_pytorch(val[label_col].tolist()),
-    )
-    tst_txt, tst_lbl = (
-        tst.sentence.tolist(),
-        prepare_labels_pytorch(tst[label_col].tolist()),
-    )
+    trn_txt, trn_lbl = (trn.sentence.tolist(), trn[label_col].tolist())
+    val_txt, val_lbl = (val.sentence.tolist(), val[label_col].tolist())
+    tst_txt, tst_lbl = (tst.sentence.tolist(), tst[label_col].tolist())
 
     train_data = list(zip(trn_txt, trn_lbl))
     eval_data = list(zip(val_txt, val_lbl))
@@ -311,7 +271,6 @@ def load_data(prop, path, label_col, categories):
     print("train", len(train_data))
     print("val", len(eval_data))
     print("test", len(test_data))
-
     return train_data, eval_data, test_data
 
 

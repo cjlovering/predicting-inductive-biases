@@ -13,7 +13,7 @@ url={https://openreview.net/forum?id=mNtmhaDkAr}
 
 ### Setup (2022+)
 
-This project was tested (and upated) to run on v100s with pytorch 1.12.1+cu102 and transformers 4.23.1 using slurm. We saved the full details of the environment in requirements_2022.txt.
+This project was tested (and updated) to run on v100s with pytorch 1.12.1+cu102 and transformers 4.23.1 using slurm. We saved the full details of the environment in requirements_2022.txt.
 
 
 ```bash
