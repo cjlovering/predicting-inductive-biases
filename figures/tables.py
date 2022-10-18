@@ -1,19 +1,5 @@
-import glob
-import itertools
-
-from collections import ChainMap
-from collections import Counter
-from collections import defaultdict
-from scipy.stats import zscore
-
-import scipy.stats as stats
-
-import matplotlib.colors as colors
-import matplotlib.cm as cm
-from sklearn.metrics import ndcg_score
-
 import pandas as pd
-from typing import Dict, List
+from typing import List
 
 
 def compute_correlations(results: pd.DataFrame, target_metric: str) -> pd.DataFrame:

@@ -1,9 +1,5 @@
 import pytorch_lightning as pl
-import torch
 import torch.nn as nn
-
-# pytorch_lightning metrics is outdated; now torchmetrics is used,
-# but that requires a bit more of a refactor.
 import torchmetrics as metrics
 from transformers import AdamW
 

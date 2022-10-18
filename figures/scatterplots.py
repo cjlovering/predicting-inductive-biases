@@ -1,22 +1,6 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-import json
 import pandas as pd
-import numpy as np
-import glob
-import itertools
-
-from collections import ChainMap
-from collections import Counter
-from collections import defaultdict
-from scipy.stats import zscore
-
-import scipy.stats as stats
-
-import matplotlib.colors as colors
-import matplotlib.cm as cm
-
-from pylab import text
 
 
 def scatter(scatterdata):
