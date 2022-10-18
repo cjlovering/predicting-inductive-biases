@@ -1,0 +1,12 @@
+#!/bin/sh
+DATE=`date +%Y-%m-%d`
+
+python job.py --experiment slim_finetune
+python job.py --experiment slim_probing
+
+echo $DATE
+# https://hpc.nih.gov/docs/job_dependencies.html
+almostjid1=$(sbatch jobs/slim_finetune-$DATE.sh)
+arr=($almostjid1)
+jid1=${arr[3]}
+sbatch --dependency=afterok:$jid1 jobs/slim_probing-$DATE.sh

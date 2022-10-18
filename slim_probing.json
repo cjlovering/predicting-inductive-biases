@@ -1,0 +1,22 @@
+{
+    "prop": [
+        "sva_base_plural",
+        "sva_hard_plural"
+    ],
+    "rate": [
+        -1.0
+    ],
+    "probe": [
+        "strong",
+        "weak"
+    ],
+    "task": [
+        "probing"
+    ],
+    "model": [
+        "bert-base-uncased"
+    ],
+    "seed": [
+        1
+    ]
+}
