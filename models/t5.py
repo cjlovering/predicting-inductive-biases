@@ -1,3 +1,10 @@
+"""NOTE: We train a classifier off of the embeddings from T5, 
+rather than using the text2text capabilities. Trying out the default
+approach would be interesting/smart. (Further, trying this type of
+experiment on seq2seq models and prompting models more geneally would
+be an exciting extension.)
+"""
+
 import torch.nn as nn
 from transformers import (
     AdamW,
