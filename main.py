@@ -85,7 +85,6 @@ def main(
     task="finetune",
     model="bert-base-uncased",
     seed=1,
-    wandb_entity="bert-syntax",
 ):
     """Trains and evaluates model.
 
@@ -156,7 +155,7 @@ def main(
     # `export WANDB_API_KEY=62831853071795864769252867665590057683943`.
     config = dict(prop=prop, rate=rate, probe=probe, task=task, model=model, seed=seed)
 
-    wandb_logger = WandbLogger(entity=wandb_entity, project="features")
+    wandb_logger = WandbLogger(project="inductive-biases-g4-bogdan")
     wandb_logger.log_hyperparams(config)
     train_data, eval_data, test_data = load_data(
         prop, path, label_col, [positive_label, negative_label]
