@@ -95,7 +95,7 @@ tomli==2.0.1
 # torch==1.12.1
 # torch==1.12.1+cu113 --extra-index-url https://download.pytorch.org/whl/
 torch
-torchmetrics
+torchmetrics==0.10.0
 torchvision
 tqdm==4.64.1
 transformers==4.23.1
