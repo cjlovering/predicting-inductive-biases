@@ -58,8 +58,13 @@ class BaseClassifier(pl.LightningModule):
         logits, _ = self.step(batch)
         loss = nn.functional.cross_entropy(logits, labels, reduction="sum")
         self.test_acc(logits, labels)
-        self.log("test_acc", self.test_acc, on_step=True, on_epoch=False)
+        # self.log("test_acc", self.test_acc, on_step=True, on_epoch=False)
         self.test_f1(logits, labels)
-        self.log("test_f1", self.test_f1, on_step=True, on_epoch=False)
-        self.log("test_loss", loss, on_step=True, on_epoch=False)
-        return {"test_loss": loss}
+        # self.log("test_f1", self.test_f1, on_step=True, on_epoch=False)
+        # self.log("test_loss", loss, on_step=True, on_epoch=False)
+        self.log_dict({
+            'test_loss': loss,
+            'test_f1': self.test_f1,
+            'test_acc': self.test_acc
+        })
+        # return {"test_loss": loss}

@@ -10,4 +10,5 @@ inductive-biases-g4-bogdan/
 jobs/
 predicting-venv/
 wandb/
+results/
 
