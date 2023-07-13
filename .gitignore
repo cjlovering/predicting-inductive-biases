@@ -1,9 +1,6 @@
-./figures/figures/*
-./figures/files/*
+figures/figures/*
+figures/files/*
 properties/
-./figures/figures/*
-./figures/files/*
-./properties/*
 __pycache__/
 data/
 inductive-biases-g4-bogdan/
@@ -11,4 +8,4 @@ jobs/
 predicting-venv/
 wandb/
 results/
-
+lightning_logs
