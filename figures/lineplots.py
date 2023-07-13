@@ -49,7 +49,7 @@ def plot(MEASURE, NAME, Y, MODEL, Y_label, _MIN, _MAX, results, probing):
     filled_markers = filled_markers[:NUM_PROPS]
 
     cmap = RedBlue.get_mpl_colormap()
-    norm = colors.DivergingNorm(vmin=_MIN, vcenter=1.0, vmax=_MAX)
+    norm = colors.TwoSlopeNorm(vmin=_MIN, vcenter=1.0, vmax=_MAX)
 
     f, axes = plt.subplots(
         1,
@@ -209,7 +209,7 @@ def plot_full(MEASURE, NAME, Y, MODEL, Y_label, _MIN, _MAX, results, probing):
 
     cmap = RedBlue.get_mpl_colormap()
 
-    norm = colors.DivergingNorm(vmin=_MIN, vcenter=1.0, vmax=_MAX)
+    norm = colors.TwoSlopeNorm(vmin=_MIN, vcenter=1.0, vmax=_MAX)
 
     f, axes = plt.subplots(
         4,
