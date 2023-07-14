@@ -19,7 +19,11 @@ props=(gap-base-length
         sva_hard_lexical
         sva_hard_length
         sva_hard_plural)
-rates=(0.0 0.001 0.01 0.05 0.1 0.2 0.5)
+# rates=(0.0 0.001 0.01 0.05 0.1 0.2 0.5)
+
+# rates1=(0.001  0.05 0.2 )
+rates2=(0.0    0.01 0.1 0.5)
+
 models=(gpt2 lstm-toy lstm-glove t5-base bert-base-uncased roberta-base)
 # iterate over rate and run the pipeline
 
