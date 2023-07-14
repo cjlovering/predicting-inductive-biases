@@ -31,7 +31,7 @@ for model in "${models[@]}"
 do
     for prop in "${props[@]}"
     do 
-        for rate in "${rates[@]}"
+        for rate in "${rates2[@]}"
         do 
             echo "------ FINETUNING model $model prop $prop WITH RATE $rate ------"
             python main.py --prop $prop --task finetune --model $model --rate $rate
