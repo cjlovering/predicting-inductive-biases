@@ -11,6 +11,20 @@ url={https://openreview.net/forum?id=mNtmhaDkAr}
 }
 ```
 
+
+### Setup (RL)
+```bash
+python -m venv predicting-venv      # make a new venv
+source predicting-venv/bin/activate
+pip install -r requirements_gpu.txt     # or requirements.txt if you don't have a gpu 
+python -m space download en_core_weg_lg
+source setup.sh 
+```
+
+
+# Old 
+
+Keeping this here only for reference, in case things break 
 ### Setup (2022+)
 
 This project was tested (and updated) to run on v100s with pytorch 1.12.1+cu102 and transformers 4.23.1 using slurm. We saved the full details of the environment in requirements_2022.txt.
