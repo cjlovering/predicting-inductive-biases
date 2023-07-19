@@ -9,3 +9,4 @@ predicting-venv/
 wandb/
 results/
 lightning_logs
+.vscode/
