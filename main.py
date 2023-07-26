@@ -108,7 +108,7 @@ def main(
         accumulate_grad_batches = 2
 
     if "gpt" in model:
-        batch_size = 64
+        batch_size = 32
 
     # Lower the following to (1, 0.1, 0.1) to speed up debugging.
     if "toy" in prop:

@@ -1,6 +1,6 @@
 
 
-toy_tasks=(toy_1 toy_2 toy_3 toy_5)
+toy_tasks=(toy_1 toy_2 toy_3 toy_4 toy_5)
 
 for toy in "${toy_tasks[@]}"
 do

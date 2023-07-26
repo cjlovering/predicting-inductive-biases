@@ -1,12 +1,4 @@
-source ./predicting-venv/bin/activate
-props=( npi_length
-        sva_base_agreement
-        sva_base_lexical
-        sva_base_plural
-        sva_hard_agreement
-        sva_hard_lexical
-        sva_hard_length
-        sva_hard_plural)
+props=(sva_base_plural sva_hard_agreement sva_hard_lexical sva_hard_length sva_hard_plural)
 
 rates=(0.0 0.001 0.01 0.05 0.1 0.2 0.5)
 

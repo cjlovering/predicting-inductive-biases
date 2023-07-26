@@ -18,6 +18,8 @@ def plot(MEASURE, NAME, Y, MODEL, Y_label, _MIN, _MAX, results, probing):
 
     data[MEASURE] = data[MEASURE].apply(lambda x: round(x, 4))
     data = data.sort_values(by=[MEASURE])
+    if data.empty:
+        return None
 
     # This is down to handle the log space with a zero value.
     data["rate"][data.rate == 0] += 1e-4
@@ -69,6 +71,14 @@ def plot(MEASURE, NAME, Y, MODEL, Y_label, _MIN, _MAX, results, probing):
             *data.apply(lambda x: {x["prop"]: cmap(norm(x[MEASURE]))}, axis=1).to_list()
         )
     )
+    # pal = dict(
+    #     ChainMap(
+    #         *data.apply(lambda x: {x["prop"]: cmap(norm(x[MEASURE]))}, axis=1).to_dict('records')
+    #     )
+    # )
+
+    #print(results, data)
+
     ax = sns.barplot(
         y="prop",
         x=MEASURE,
@@ -177,6 +187,8 @@ def plot_full(MEASURE, NAME, Y, MODEL, Y_label, _MIN, _MAX, results, probing):
 
     data[MEASURE] = data[MEASURE].apply(lambda x: round(x, 4))
     data = data.sort_values(by=[MEASURE])
+    if data.empty:
+        return None
 
     # This is here to handle the log space with a zero value.
     data["rate"][data.rate == 0] += 1e-4
@@ -234,6 +246,11 @@ def plot_full(MEASURE, NAME, Y, MODEL, Y_label, _MIN, _MAX, results, probing):
             *data.apply(lambda x: {x["prop"]: cmap(norm(x[MEASURE]))}, axis=1).to_list()
         )
     )
+    # pal = dict(
+    #     ChainMap(
+    #         *data.apply(lambda x: {x["prop"]: cmap(norm(x[MEASURE]))}, axis=1).to_dict('records')
+    #     )
+    # )
     ax = sns.barplot(
         y="prop",
         x=MEASURE,
@@ -357,7 +374,8 @@ def plot_full(MEASURE, NAME, Y, MODEL, Y_label, _MIN, _MAX, results, probing):
     _data = data
     _mean = _data.groupby(["rate", "prop"]).mean().reset_index()
 
-    Y = "test_f_score"
+    #Y = "test_f_score"
+    Y = "test_f1"
     ax = sns.lineplot(
         x="rate",
         y=Y,

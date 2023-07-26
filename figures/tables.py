@@ -25,7 +25,7 @@ def compute_correlations(results: pd.DataFrame, target_metric: str) -> pd.DataFr
 
     if target_metric == "evidence_required":
         EVIDENCE_REQUIRED_THRESHOLD = 0.99
-        correlations = df[df["test_f_score"] > EVIDENCE_REQUIRED_THRESHOLD]
+        correlations = df[df["test_f1"] > EVIDENCE_REQUIRED_THRESHOLD]
     else:
         correlations = df  # IF USING FSCORE
 
@@ -47,9 +47,9 @@ def compute_correlations(results: pd.DataFrame, target_metric: str) -> pd.DataFr
             lambda x: pd.Series(
                 {
                     "first": fun(x.rate),
-                    "test_f_score": x["test_f_score"].mean(),
-                    "f_area": x["test_f_score"].sum(),
-                    "f_error_area": (1 - x["test_f_score"]).sum(),
+                    "test_f_score": x["test_f1"].mean(),
+                    "f_area": x["test_f1"].sum(),
+                    "f_error_area": (1 - x["test_f1"]).sum(),
                     "weak%strong-mdl": x["weak%strong-mdl"].iloc[0],
                     "weak%strong-acc": x["weak%strong-acc"].iloc[0],
                     "weak%strong-auc": x["weak%strong-auc"].iloc[0],
